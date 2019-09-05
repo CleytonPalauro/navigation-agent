@@ -12,6 +12,9 @@ public class MouseController : MonoBehaviour
 
     public ThirdPersonCharacter myTPC;
 
+    // É o turno do GameObject que possui esse script?
+    public bool myTurn = true;
+
     void Start()
     {
         // Desabilitar a atualização da rotação do agente. 
@@ -20,31 +23,38 @@ public class MouseController : MonoBehaviour
 
     void Update()
     {
-        // 0 (esquerdo), 1 (direito), 2 (meio)
-        if (Input.GetMouseButtonDown(0))
+        if (myTurn == true)
         {
-            Debug.Log("Clicou 0!");
+            // 0 (esquerdo), 1 (direito), 2 (meio)
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Clicou 0!");
 
-            SetDestinationToMousePosition();
-        }
+                SetDestinationToMousePosition();
+            }
 
-        //Debug.Log(Input.mousePosition);
+            //Debug.Log(Input.mousePosition);
 
-        // Update para exbir o raio!
-        Ray myRay = myMainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(myRay.origin, myRay.direction * 25, Color.red);
+            // Update para exbir o raio!
+            Ray myRay = myMainCamera.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(myRay.origin, myRay.direction * 25, Color.red);
 
-        // Se a distancia restante do agente para o alvo for maior...
-        // ...que o ponto de parada...
-        if (myAgent.remainingDistance > myAgent.stoppingDistance)
-        {
-            // TPC mover de acordo com a velocidade desejada...
-            // ...não vai agachar e não vai pular.
-            myTPC.Move(myAgent.desiredVelocity, false, false);
+            // Se a distancia restante do agente para o alvo for maior...
+            // ...que o ponto de parada...
+            if (myAgent.remainingDistance > myAgent.stoppingDistance)
+            {
+                // TPC mover de acordo com a velocidade desejada...
+                // ...não vai agachar e não vai pular.
+                myTPC.Move(myAgent.desiredVelocity, false, false); // <-
+            }
+            else
+            {
+                myTPC.Move(Vector3.zero, false, false);
+            }
         }
         else
         {
-            myTPC.Move(Vector3.zero, false, false);
+            myTPC.Move(myAgent.desiredVelocity, false, false); // <-
         }
     }
 
