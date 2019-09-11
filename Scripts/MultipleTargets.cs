@@ -72,9 +72,9 @@ public class MultipleTargets : MonoBehaviour
             myBounds.Encapsulate(targets[i].position);
         }
 
-        Debug.Log("x = " + myBounds.size.x);
-        Debug.Log("y = " + myBounds.size.y);
-        Debug.Log("z = " + myBounds.size.z);
+        //Debug.Log("x = " + myBounds.size.x);
+        //Debug.Log("y = " + myBounds.size.y);
+        //Debug.Log("z = " + myBounds.size.z);
 
         return myBounds.size.x;
     }

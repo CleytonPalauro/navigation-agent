@@ -59,7 +59,7 @@ public class TurnManager : MonoBehaviour
         {
             // Subtrai da quantidade de segundos o tempo definido por turno.
             secondsCount -= turnTime;
-            Debug.Log("Troca turno!");
+            //Debug.Log("Troca turno!");
 
             // Aponta de quem é a vez.
             // 1 % 2 = 1 // 2 % 2 = 0

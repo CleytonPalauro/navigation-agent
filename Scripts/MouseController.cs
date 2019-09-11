@@ -15,6 +15,9 @@ public class MouseController : MonoBehaviour
     // É o turno do GameObject que possui esse script?
     public bool myTurn = true;
 
+    // Indicador de destino do personagem.
+    public GameObject totem;
+
     void Start()
     {
         // Desabilitar a atualização da rotação do agente. 
@@ -28,7 +31,7 @@ public class MouseController : MonoBehaviour
             // 0 (esquerdo), 1 (direito), 2 (meio)
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Clicou 0!");
+                //Debug.Log("Clicou 0!");
 
                 SetDestinationToMousePosition();
             }
@@ -60,7 +63,7 @@ public class MouseController : MonoBehaviour
 
     void SetDestinationToMousePosition()
     {
-        Debug.Log("SetDestinationToMousePosition!");
+        //Debug.Log("SetDestinationToMousePosition!");
 
         // Retornar um raio (Ray) indo da MainCamera atrevéz de um ponto na tela.
         Ray myRay = myMainCamera.ScreenPointToRay(Input.mousePosition);
@@ -70,11 +73,28 @@ public class MouseController : MonoBehaviour
 
         if (Physics.Raycast(myRay, out myRaycastHit))
         {
-            Debug.Log("IF Raycast");
+            Debug.Log(myRaycastHit.collider.name); // <- Update!
+
+            if (myRaycastHit.collider.CompareTag("Coletavel"))
+            {
+
+                myRaycastHit.collider.tag = "Destruir";
+            }
 
             myAgent.SetDestination(myRaycastHit.point);
+            Debug.DrawLine(myRay.origin, myRaycastHit.point, Color.red);
 
-            //Debug.DrawLine(myRay.origin, myRaycastHit.point, Color.blue);
+            // Reposicionar a indicação de navegação do agente.
+            totem.transform.position = myRaycastHit.point;
+        }
+    }
+
+    // O objeto que colidir com o personagem vai destruir...
+    private void OnCollisionStay(Collision myCollision)
+    {
+        if (myCollision.gameObject.CompareTag("Destruir"))
+        {
+            Destroy(myCollision.gameObject);
         }
     }
 }
